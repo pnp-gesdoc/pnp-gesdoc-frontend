@@ -4,12 +4,11 @@ import {TipoDocumento} from '../../models/tipoDocumento.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {ConfigService} from '../../services/config.service';
-import {RegistroRequestDto} from '../../dto/registroRequest.dto';
+import {RegistroRequestDto} from '../../models/registroRequest.model';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {UsuarioService} from '../../services/usuario.service';
 import {Usuario} from '../../models/usuario.model';
 import {MatTableDataSource} from '@angular/material/table';
-import {element} from 'protractor';
 
 @Component({
   selector: 'app-registro',
@@ -53,8 +52,10 @@ export class RegistroComponent implements OnInit {
   setAutoGenerate() {
     this.spinner.show();
     this.documentoService.getCalculaSigla(this.form.controls.sTipoDocumento.value).subscribe(data => {
-      this.form.controls.sSiglas.setValue(data);
+      console.log(data);
+      this.form.controls.sSiglas.setValue(data.numeroSiglas);
     }, error => {
+      console.log(error);
       this.spinner.hide();
     }, () => {
       this.spinner.hide();
@@ -87,7 +88,7 @@ export class RegistroComponent implements OnInit {
 
   registrar() {
     if (this.form.invalid) {
-      this.configService.alert('Debe cumplir con los datos requeridos');
+      this.configService.alert('Por favor complete los campos obligatorios');
       return;
     }
 
@@ -95,22 +96,29 @@ export class RegistroComponent implements OnInit {
     input.documentotipoid = this.form.controls.sTipoDocumento.value;
     input.numerosiglas = this.form.controls.sSiglas.value;
     input.asunto = this.form.controls.sAsunto.value;
+    let file = this.form.controls.sFile.value ? this.form.controls.sFile.value.files[0] : undefined;
     input.archivo = this.form.controls.sFile.value ? this.form.controls.sFile.value.files[0].name : '';
-    input.xArchivo = this.form.controls.sFile.value ? this.fileBlob : '';
     input.usuarios = this.usuariosGrilla;
 
+    console.log(this.form);
+    console.log();
+
     this.spinner.show();
-    this.documentoService.registrar(input).subscribe(data => {
-      this.registroExitoso =1 ;
+    this.documentoService.registrar(input, file).pipe(
+      // switchMap(res => {
+      //   return this.documentoService.cargarArchivo(res.body.toString(), input.archivoBlob );
+      // })
+    ).subscribe(data => {
+      this.registroExitoso = 1;
     }, error => {
       this.spinner.hide();
     }, () => {
       this.spinner.hide();
       if (this.registroExitoso === environment.INT_ONE) {
-        this.configService.alert('Registro existoso');
+        this.configService.alert('Se registró el documento');
         this.configService.link('bandeja');
       } else {
-        this.configService.alert('Error al registrar');
+        this.configService.alert('Ocurrió un error al registrar el documento');
       }
     });
 
@@ -119,21 +127,9 @@ export class RegistroComponent implements OnInit {
   uploadFile(event) {
     if (event.target.value) {
       const file = event.target.files[0];
-      this.changeFile(file).then((base64: string): any => {
-        this.fileBlob = base64.split(',')[1];
-      });
     } else {
       this.configService.alert('No se pudo cargar el archivo');
     }
-  }
-
-  changeFile(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
   }
 
   fnListarTiposDocumentos() {

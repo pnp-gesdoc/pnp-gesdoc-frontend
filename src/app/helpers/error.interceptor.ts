@@ -10,8 +10,17 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private configService: ConfigService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+
+    if (req.headers.has('OverrideContentType')){
+      req = req.clone({
+        headers : req.headers.delete('Content-Type')
+      });
+      ;
+    }
+
     return next.handle(req).pipe(
       catchError(error => {
+        console.log(error);
         let errorMessage = '';
         if (error instanceof HttpErrorResponse) {
           if (error.error.codigo && error.error.mensaje) {

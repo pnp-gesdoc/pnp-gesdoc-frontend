@@ -11,7 +11,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 export class UsuariosComponent implements OnInit {
 
   dataSource: MatTableDataSource<Usuario>;
-  displayedColumns = ['item', 'dni', 'nombres', 'apellidos', 'correo', 'acciones'];
+  displayedColumns = ['item', 'dni', 'nombres', 'apellidos', 'correo'];
 
   constructor(public dialog: MatDialogRef<UsuariosComponent>,
               @Inject(MAT_DIALOG_DATA) public dataDialog: Usuario[]) { }

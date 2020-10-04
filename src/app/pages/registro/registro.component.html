@@ -7,14 +7,14 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
-          Tipo de documento:
+          Tipo de documento
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <mat-form-field appearance="outline">
             <mat-label>Tipo de documento</mat-label>
             <mat-select formControlName="sTipoDocumento" (selectionChange)="setAutoGenerate()">
               <mat-option *ngFor="let item of tiposDocumento" [value]="item.id">
-                {{item.descripcion | uppercase}}
+                {{item.descripcion}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="form.get('sTipoDocumento').invalid">{{configService.getErrorMessage(form, 'sTipoDocumento')}}</mat-error>
@@ -24,7 +24,7 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
-          Número y siglas:
+          Número y siglas
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <mat-form-field appearance="outline">
@@ -37,7 +37,7 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
-          Asunto:
+          Asunto
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <mat-form-field appearance="outline">
@@ -50,20 +50,20 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
-          Archivo:
+          Archivo
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <mat-form-field appearance="outline">
-            <mat-label>Archivo adjunto (sólo PDF)</mat-label>
-            <ngx-mat-file-input formControlName="sFile" (change)="uploadFile($event)" placeholder="Sólo archivos PDF" [accept]="'.pdf'"></ngx-mat-file-input>
+            <mat-label>Archivo adjunto</mat-label>
+            <ngx-mat-file-input formControlName="sFile" (change)="uploadFile($event)" placeholder="Sólo archivos PDF" [accept]="'.pdf,.docx,.doc,.xls,.xlsx'"></ngx-mat-file-input>
             <mat-icon matSuffix fontSet="fas" fontIcon="fa-paperclip"></mat-icon>
-            <mat-hint align="end">Tamaño máximo de archivo: 3 MB</mat-hint>
+            <mat-hint align="end">Tamaño máximo de archivo: 10 MB</mat-hint>
             <mat-error *ngIf="form.get('sFile').invalid">{{configService.getErrorMessage(form,'sFile')}}</mat-error>
             <mat-error *ngIf="form.get('sFile').hasError('requiredFileType')">
               Archivo no permitido.
             </mat-error>
             <mat-error *ngIf="form.get('sFile').hasError('maxContentSize')">
-              Tamaño máximo de archivo: 3 MB (su archivo tiene {{form.get('sFile')?.getError('maxContentSize').actualSize| byteFormat}}).
+              Tamaño máximo de archivo: 10 MB (su archivo tiene {{form.get('sFile')?.getError('maxContentSize').actualSize| byteFormat}}).
             </mat-error>
             <mat-error *ngIf="form.get('sFile').hasError('requiredFileMinSize')">
               Su archivo está vacío.
@@ -74,8 +74,9 @@
 
       <div class="row pb-3">
         <div class="col-12">
-          <button type="button" tabindex="-1" mat-raised-button class="mt-1 mat-elevation-z8" color="primary" (click)="btnUsuarios()">
-            <mat-icon fontSet="fas" fontIcon="fa-search"></mat-icon> Agregar usuario parcipante
+          Agregar usuarios parcipantes
+          <button mat-icon-button color="accent" (click)="btnUsuarios()">
+            <mat-icon aria-hidden="false" aria-label="Buscar usuarios">search</mat-icon>
           </button>
         </div>
       </div>
@@ -107,10 +108,10 @@
         </ng-container>
 
         <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <button tabindex="-1" mat-icon-button color="warn" matTooltip="Eliminar" (click)="delete(element)">
-              <mat-icon fontSet="fas" fontIcon="fa-trash"></mat-icon>
+              <mat-icon aria-hidden="false" aria-label="Eliminar">delete_forever</mat-icon>
             </button>
           </mat-cell>
         </ng-container>
@@ -124,8 +125,12 @@
 
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center align-items-center">
-      <button tabindex="-1" mat-raised-button class="mt-1" color="primary" (click)="registrar()">
-        <mat-icon fontSet="fas" fontIcon="fa-save"></mat-icon> Registrar
+      <button tabindex="-1" mat-raised-button class="mt-1" color="accent" (click)="registrar()">
+        Guardar
+      </button>
+
+      <button tabindex="-1" style="margin-left: 10px;" mat-raised-button class="mt-1" color="accent" (click)="this.configService.link('bandeja')">
+        <mat-icon aria-hidden="false" aria-label="Volver">keyboard_backspace</mat-icon> Volver
       </button>
     </div>
   </div>

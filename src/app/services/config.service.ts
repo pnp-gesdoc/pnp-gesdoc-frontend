@@ -3,9 +3,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {FormGroup} from '@angular/forms';
-import {VisorArchivoComponent} from '../core/visor-archivo/visor-archivo.component';
+import {VisorArchivoComponent} from '../pages/visor-archivo/visor-archivo.component';
 import {Usuario} from '../models/usuario.model';
-import {UsuariosComponent} from '../core/usuarios/usuarios.component';
+import {UsuariosComponent} from '../pages/usuarios/usuarios.component';
 
 @Injectable({
   providedIn: 'root'

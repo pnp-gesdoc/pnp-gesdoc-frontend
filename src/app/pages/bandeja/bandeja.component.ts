@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {DocumentoService} from '../../services/documento.service';
+import {DocumentoDataSource} from '../../services/documento.datasource';
 import {TipoDocumento} from '../../models/tipoDocumento.model';
 import {ConfigService} from '../../services/config.service';
 import {ResultadoBusqueda} from '../../models/resultadoBusqueda.model';
-import {BusquedaRequestDto} from '../../dto/busquedaRequest.dto';
+import {BusquedaRequestDto} from '../../models/busquedaRequest.model';
 import {NgxSpinnerService} from 'ngx-spinner';
-import { ResultadoBusquedaDocumento } from 'src/app/models/resultadoBusquedaDocumento.model';
+import { MatPaginator, MatSort } from '@angular/material';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bandeja',
@@ -20,10 +23,15 @@ export class BandejaComponent implements OnInit {
   form: FormGroup;
 
   tiposDocumento: TipoDocumento[];
-  dataResult: ResultadoBusquedaDocumento[];
+  public documentosDatasource : DocumentoDataSource;
+  pageSize : number = 5;
+  dataResult: ResultadoBusqueda;
   statusEliminado: number;
 
-  displayedColumns: string[] = ['item', 'tipoDocumento', 'asunto', 'numeroSiglas', 'acciones'];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  displayedColumns: string[] = ['id', 'dt.descripcion', 'asunto', 'numeroSiglas', 'acciones'];
 
   constructor(public configService: ConfigService,
               private documentoService: DocumentoService,
@@ -38,8 +46,19 @@ export class BandejaComponent implements OnInit {
       'sUsuario': new FormControl(''),
       'sAsunto': new FormControl(''),
     });
+    this.documentosDatasource = new DocumentoDataSource(this.documentoService, this.spinner);
 
     this.fnListarTiposDocumentos();
+    this.fnDatatable('init');
+  }
+
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    merge(this.sort.sortChange, this.paginator.page)
+        .pipe(
+            tap(() => this.fnDatatable())
+        )
+        .subscribe();
   }
 
   fnDatatable(from?: string) {
@@ -49,18 +68,20 @@ export class BandejaComponent implements OnInit {
     input.siglas = this.form.controls.sSiglas.value;
     input.usuario = this.form.controls.sUsuario.value;
     input.asunto = this.form.controls.sAsunto.value;
+    input.ordenarPor = this.sort.active;
+    input.ordenarDireccion = this.sort.direction;
+    input.pagina = this.paginator.pageIndex ? this.paginator.pageIndex : 0;
+    input.tamano = this.paginator.pageSize ? this.paginator.pageSize : 5;
 
-    this.spinner.show();
-    this.documentoService.listarDocumentosTabla(input).subscribe(data => {
-      this.dataResult = data.documentos;
-    }, error => {
-      this.spinner.hide();
-    }, () => {
-      this.spinner.hide();
-      if (from === 'delete') {
-        this.configService.alert('Registro eliminado');
-      }
-    });
+    if (from === 'delete') {
+      this.configService.alert('Se eliminó el documento seleccionado');
+    }
+    this.documentosDatasource.cargarDetalleDocumentos(input);
+
+  }
+
+  fnOrdenarDatasource(evt: Event){
+    this.fnDatatable('sort');
   }
 
   fnListarTiposDocumentos() {
@@ -70,14 +91,14 @@ export class BandejaComponent implements OnInit {
     }, error => {
       this.spinner.hide();
     }, () => {
-      this.fnDatatable();
+      this.spinner.hide();
     });
   }
 
   btnDelete(id: string) {
     this.spinner.show();
     this.documentoService.removeDocumento(id).subscribe(data => {
-      //this.statusEliminado = data;
+      this.statusEliminado = 1;
     }, error => {
       this.spinner.hide();
     }, () => {

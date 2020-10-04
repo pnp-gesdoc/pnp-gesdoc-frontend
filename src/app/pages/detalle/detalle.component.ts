@@ -42,8 +42,7 @@ export class DetalleComponent implements OnInit {
     this.documentoService.getDocumento(id).subscribe(data => {
       this.detalleDocumento = data;
       if(this.detalleDocumento.archivo){
-        this.detalleDocumento.extension = this.detalleDocumento.archivo
-              .substr(this.detalleDocumento.archivo.lastIndexOf('.') + 1)
+        this.detalleDocumento.extension = this.detalleDocumento.archivo.split('.').pop();
       }
       this.usuarios = this.detalleDocumento.usuarios;
     }, error => {
@@ -54,29 +53,17 @@ export class DetalleComponent implements OnInit {
     });
   }
 
-  doVerArchivo(id: string) {
-    this.documentoService.descargarArchivo(id).subscribe(data => {
-      console.log(data);
-      this.configService.getVisorArchivo(data.body);
+  doVerArchivo(id : string) {
+    this.documentoService.descargarArchivo(id).subscribe(res => {
+      this.configService.getVisorArchivo(res.body)
     });
   }
 
-  doGenerateAndDownload(base64, filename) {
-    const bytes = atob(base64); // BASE64 TO BYTES
-    const byteNumbers = new Array(bytes.length);
-    for (let i = 0; i < bytes.length; i++) {
-      byteNumbers[i] = bytes.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers); // BYTES ARRAY
-    const newBlob = new Blob([byteArray], { type: 'application/octet-stream' });
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
-      return;
-    }
-    const data = window.URL.createObjectURL(newBlob);
+  doGenerateAndDownload(id: string) {
+    const data = this.documentoService.obtenerLinkArchivo(id);
     const link = document.createElement('a');
     link.href = data;
-    link.download = filename;
+    link.download = this.detalleDocumento.archivo;
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(function() {
       window.URL.revokeObjectURL(data);

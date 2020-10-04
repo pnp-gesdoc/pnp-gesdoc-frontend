@@ -4,4 +4,8 @@ export class BusquedaRequestDto {
   idTipoDocumento: number;
   siglas: string;
   usuario: string;
+  ordenarPor: string = 'id';
+  ordenarDireccion: string = 'desc';
+  pagina: number = 0;
+  tamano: number = 5;
 }

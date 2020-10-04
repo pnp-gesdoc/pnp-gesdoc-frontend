@@ -16,13 +16,13 @@
 </ng-container>
 
 <ng-container *ngIf="detalleDocumento">
-  <h2>Ver documento:</h2>
+  <h2>Detalle de documento</h2>
   <mat-card>
     <mat-card-content>
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
-          Tipo de documento:
+          Tipo de documento
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <strong>{{ detalleDocumento?.tipoDocumentoDesc }}</strong>
@@ -31,7 +31,7 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
-          Número y siglas:
+          Número y siglas
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <strong>{{ detalleDocumento?.siglas }}</strong>
@@ -40,7 +40,7 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
-          Asunto:
+          Asunto
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <strong>{{ detalleDocumento?.asunto }}</strong>
@@ -49,17 +49,17 @@
 
       <div class="row pb-3">
         <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
-          Archivo:
+          Archivo
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
           <ng-container *ngIf="detalleDocumento?.extension === 'pdf'">
             <a href="javascript:void(0)" (click)="doVerArchivo(id)">
-              Ver documento en PDF <mat-icon fontSet="fas" fontIcon="fa-file-pdf"></mat-icon>
+              <mat-icon aria-hidden="false" aria-label="Ver">picture_as_pdf</mat-icon> {{detalleDocumento.archivo}}
             </a>
           </ng-container>
           <ng-container *ngIf="detalleDocumento?.extension !== 'pdf'">
-            <a href="javascript:void(0)" (click)="doGenerateAndDownload(detalleDocumento?.xArchivo, detalleDocumento?.archivo)">
-              Descargar archivo <mat-icon fontSet="fas" fontIcon="fa-download"></mat-icon>
+            <a href="javascript:void(0)" (click)="doGenerateAndDownload(id)">
+              <mat-icon aria-hidden="false" aria-label="Ver">cloud_download</mat-icon> {{detalleDocumento.archivo}}
             </a>
           </ng-container>
         </div>
@@ -101,8 +101,8 @@
 
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center align-items-center">
-      <button tabindex="-1" mat-raised-button class="mt-1" color="warn" (click)="cerrar()">
-        <mat-icon fontSet="fas" fontIcon="fa-times"></mat-icon> Cerrar
+      <button tabindex="-1" mat-raised-button class="mt-1" color="accent" (click)="cerrar()">
+        <mat-icon aria-hidden="false" aria-label="Volver">keyboard_backspace</mat-icon> Volver
       </button>
     </div>
   </div>

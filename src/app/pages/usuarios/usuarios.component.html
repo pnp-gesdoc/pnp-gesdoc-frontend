@@ -3,7 +3,6 @@
   <mat-toolbar color="accent">
     <mat-toolbar-row class="toolbar-header">
       <div>
-        <mat-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
         <span class="ml-2">Seleccione usuario</span>
       </div>
     </mat-toolbar-row>
@@ -38,17 +37,10 @@
         <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="acciones">
-        <mat-header-cell *matHeaderCellDef> Seleccionar </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button tabindex="-1" mat-icon-button color="warn" matTooltip="Seleccionar" (click)="select(element)">
-            <mat-icon fontSet="fas" fontIcon="fa-check-square"></mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;" [ngClass]="{gray: odd}"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;"
+        style="cursor: pointer;"
+        [ngClass]="{gray: odd}" (click)="select(row)"></mat-row>
 
     </mat-table>
 

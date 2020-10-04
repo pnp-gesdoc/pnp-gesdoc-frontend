@@ -20,12 +20,12 @@ import { ConfigService } from './services/config.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import { BandejaComponent } from './core/bandeja/bandeja.component';
-import { DetalleComponent } from './core/detalle/detalle.component';
-import { RegistroComponent } from './core/registro/registro.component';
+import { BandejaComponent } from './pages/bandeja/bandeja.component';
+import { DetalleComponent } from './pages/detalle/detalle.component';
+import { RegistroComponent } from './pages/registro/registro.component';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
-import { VisorArchivoComponent } from './core/visor-archivo/visor-archivo.component';
-import { UsuariosComponent } from './core/usuarios/usuarios.component';
+import { VisorArchivoComponent } from './pages/visor-archivo/visor-archivo.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
