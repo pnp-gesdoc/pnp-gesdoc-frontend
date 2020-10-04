@@ -82,10 +82,6 @@
       </div>
 
       <mat-table [dataSource]="dataSource" class="mat-elevation-z2 mt-3">
-        <ng-container matColumnDef="item">
-          <mat-header-cell *matHeaderCellDef> N° </mat-header-cell>
-          <mat-cell *matCellDef="let element; let i = index;"> {{i + 1}} </mat-cell>
-        </ng-container>
 
         <ng-container matColumnDef="dni">
           <mat-header-cell *matHeaderCellDef> DNI </mat-header-cell>

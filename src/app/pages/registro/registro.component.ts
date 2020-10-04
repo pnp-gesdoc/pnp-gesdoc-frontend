@@ -30,7 +30,7 @@ export class RegistroComponent implements OnInit {
   usuariosGrilla: Usuario[] = [];
 
   dataSource: MatTableDataSource<Usuario>;
-  displayedColumns: string[] = ['item', 'dni', 'nombres', 'apellidos', 'correo', 'acciones'];
+  displayedColumns: string[] = ['dni', 'nombres', 'apellidos', 'correo', 'acciones'];
 
   constructor(public configService: ConfigService,
               private documentoService: DocumentoService,
@@ -63,21 +63,19 @@ export class RegistroComponent implements OnInit {
   }
 
   btnUsuarios() {
-    this.spinner.show();
-    this.usuarioService.listarUsuariosTabla().subscribe(data => {
-      this.usuarios = data;
-    }, error => {
-      this.spinner.hide();
-    }, () => {
-      this.spinner.hide();
-      const dialogRef = this.configService.getUsuarios(this.usuarios);
-      dialogRef.afterClosed().subscribe((selected: Usuario) => {
-        if (selected) {
+    const dialogRef = this.configService.getUsuarios(this.usuarios);
+    dialogRef.afterClosed().subscribe((selected: Usuario) => {
+      if (selected) {
+        let buscar = this.usuariosGrilla.find(x => x.id === selected.id);
+        if(buscar){
+          this.configService.alert('Usuario ya se encuentra agregado');
+        }else{
           this.usuariosGrilla.push(selected);
-          this.dataSource = new MatTableDataSource<Usuario>();
-          this.dataSource.data = this.usuariosGrilla;
         }
-      });
+
+        this.dataSource = new MatTableDataSource<Usuario>();
+        this.dataSource.data = this.usuariosGrilla;
+      }
     });
   }
 

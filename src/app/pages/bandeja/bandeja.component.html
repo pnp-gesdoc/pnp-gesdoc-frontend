@@ -101,10 +101,6 @@
 
 <mat-table [dataSource]="documentosDatasource" matSort (matSortChange) = "fnOrdenarDatasource($event)"
   class="mat-elevation-z8 mt-3">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> N° </mat-header-cell>
-    <mat-cell *matCellDef="let element">{{element.idDocumento}}</mat-cell>
-  </ng-container>
 
   <ng-container matColumnDef="dt.descripcion">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Documento </mat-header-cell>

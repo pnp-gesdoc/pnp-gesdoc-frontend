@@ -25,7 +25,6 @@ export class DocumentoService {
   listarDocumentosTabla(busquedaRequest: BusquedaRequestDto) {
     let params = new HttpParams();
     Object.keys(busquedaRequest).map(k =>{
-      console.log(k , '  ' ,busquedaRequest[k]);
       if(busquedaRequest[k] && busquedaRequest[k]!==""){
         params=params.set(k, busquedaRequest[k]);
       }

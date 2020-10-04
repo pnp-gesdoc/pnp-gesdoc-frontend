@@ -56,7 +56,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
         MaterialFileInputModule
     ],
   providers: [
-    { provide: APP_BASE_HREF, useValue: '/gdpnp' },
+    { provide: APP_BASE_HREF, useValue: '/gesdoc' },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     ConfigService,
   ],

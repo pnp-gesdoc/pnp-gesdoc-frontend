@@ -31,7 +31,7 @@ export class BandejaComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = ['id', 'dt.descripcion', 'asunto', 'numeroSiglas', 'acciones'];
+  displayedColumns: string[] = ['dt.descripcion', 'asunto', 'numeroSiglas', 'acciones'];
 
   constructor(public configService: ConfigService,
               private documentoService: DocumentoService,

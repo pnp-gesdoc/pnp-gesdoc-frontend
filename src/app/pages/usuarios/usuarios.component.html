@@ -10,11 +10,11 @@
 
   <div class="table-container">
 
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange) = "fnOrdenarDatasource($event)">
 
       <ng-container matColumnDef="item">
-        <mat-header-cell *matHeaderCellDef> N° </mat-header-cell>
-        <mat-cell *matCellDef="let element; let i = index;"> {{i + 1}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dni">
@@ -43,7 +43,8 @@
         [ngClass]="{gray: odd}" (click)="select(row)"></mat-row>
 
     </mat-table>
-
+    <mat-paginator class="paginator" [length]="dataSource?.total" [pageSize]="pageSize"
+     [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons></mat-paginator>
   </div>
 
 </div>
