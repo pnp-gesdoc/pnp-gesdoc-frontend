@@ -1,0 +1,35 @@
+.mat-table {
+  width: 100%;
+}
+.mat-column-acciones {
+  justify-content: flex-end;
+}
+mat-header-row.mat-header-row {
+  background-color: #F2FCF8;
+}
+.mat-header-cell {
+  font-weight: 600;
+  font-size: .9rem;
+  color: black;
+}
+mat-cell.mat-cell {
+  font-style: normal;
+}
+.mat-column-item,
+.mat-column-select {
+  flex: 0 0 6%;
+}
+.mat-column-dni {
+  flex: 0 0 15%;
+}
+.mat-column-nombres {
+  flex: 0 0 20%;
+  padding: 7px;
+}
+.mat-column-apellidos {
+  flex: 0 0 20%;
+  padding: 7px;
+}
+.mat-column-correo {
+  padding: 7px;
+}

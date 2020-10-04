@@ -1,0 +1,110 @@
+<ng-container *ngIf="!detalleDocumento && !mostrar">
+  <mat-card>
+    <mat-card-content class="d-flex justify-content-center align-items-center">
+      <p>No se pudo obtener información del documento: {{id}}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="row mt-3">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+      <button tabindex="-1" mat-raised-button class="mt-1" color="warn" (click)="cerrar()">
+        <mat-icon fontSet="fas" fontIcon="fa-undo-alt"></mat-icon> Volver
+      </button>
+    </div>
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="detalleDocumento">
+  <h2>Ver documento:</h2>
+  <mat-card>
+    <mat-card-content>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
+          Tipo de documento:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <strong>{{ detalleDocumento?.tipoDocumentoDesc }}</strong>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
+          Número y siglas:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <strong>{{ detalleDocumento?.siglas }}</strong>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
+          Asunto:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <strong>{{ detalleDocumento?.asunto }}</strong>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end">
+          Archivo:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <ng-container *ngIf="detalleDocumento?.extension === 'pdf'">
+            <a href="javascript:void(0)" (click)="doVerArchivo(id)">
+              Ver documento en PDF <mat-icon fontSet="fas" fontIcon="fa-file-pdf"></mat-icon>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="detalleDocumento?.extension !== 'pdf'">
+            <a href="javascript:void(0)" (click)="doGenerateAndDownload(detalleDocumento?.xArchivo, detalleDocumento?.archivo)">
+              Descargar archivo <mat-icon fontSet="fas" fontIcon="fa-download"></mat-icon>
+            </a>
+          </ng-container>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-table [dataSource]="usuarios" class="mat-elevation-z2 mt-3">
+    <ng-container matColumnDef="item">
+      <mat-header-cell *matHeaderCellDef> N° </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index;"> {{i + 1}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dni">
+      <mat-header-cell *matHeaderCellDef> DNI </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.dni}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nombres">
+      <mat-header-cell *matHeaderCellDef> Nombres </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nombres}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="apellidos">
+      <mat-header-cell *matHeaderCellDef> Apellidos </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.apellidos}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="correo">
+      <mat-header-cell *matHeaderCellDef> Correo </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;" [ngClass]="{gray: odd}"></mat-row>
+  </mat-table>
+
+  <div class="row mt-3">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+      <button tabindex="-1" mat-raised-button class="mt-1" color="warn" (click)="cerrar()">
+        <mat-icon fontSet="fas" fontIcon="fa-times"></mat-icon> Cerrar
+      </button>
+    </div>
+  </div>
+
+</ng-container>

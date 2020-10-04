@@ -1,0 +1,34 @@
+.mat-table {
+  width: 100%;
+}
+.mat-column-acciones {
+  justify-content: flex-start;
+}
+mat-header-row.mat-header-row {
+  background-color: #F2FCF8;
+}
+.mat-header-cell {
+  font-weight: 600;
+  font-size: .9rem;
+  color: black;
+}
+mat-cell.mat-cell {
+  font-style: normal;
+}
+.mat-column-item,
+.mat-column-select {
+  flex: 0 0 6%;
+}
+.mat-column-tipoDocumento {
+  flex: 0 0 12%;
+}
+.mat-column-asunto {
+  flex: 0 0 25%;
+  padding: 7px;
+}
+.mat-column-siglas {
+  padding: 7px;
+}
+.mat-column-acciones {
+  flex: 0 0 10%;
+}

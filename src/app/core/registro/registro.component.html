@@ -1,0 +1,133 @@
+<h2>Registrar documento:</h2>
+
+<form [formGroup]="form">
+
+  <mat-card>
+    <mat-card-content>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
+          Tipo de documento:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select formControlName="sTipoDocumento" (selectionChange)="setAutoGenerate()">
+              <mat-option *ngFor="let item of tiposDocumento" [value]="item.id">
+                {{item.descripcion | uppercase}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('sTipoDocumento').invalid">{{configService.getErrorMessage(form, 'sTipoDocumento')}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
+          Número y siglas:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Número y siglas</mat-label>
+            <input matInput formControlName="sSiglas" placeholder="" autocomplete="off">
+            <mat-error *ngIf="form.get('sSiglas').invalid">{{configService.getErrorMessage(form, 'sSiglas')}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
+          Asunto:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Asunto</mat-label>
+            <input matInput formControlName="sAsunto" placeholder="" autocomplete="off">
+            <mat-error *ngIf="form.get('sAsunto').invalid">{{configService.getErrorMessage(form, 'sAsunto')}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 pr-md-2 pr-lg-2 pr-xl-2 d-flex justify-content-end pt-3 label-left">
+          Archivo:
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8 pr-md-2 pr-lg-2 pr-xl-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Archivo adjunto (sólo PDF)</mat-label>
+            <ngx-mat-file-input formControlName="sFile" (change)="uploadFile($event)" placeholder="Sólo archivos PDF" [accept]="'.pdf'"></ngx-mat-file-input>
+            <mat-icon matSuffix fontSet="fas" fontIcon="fa-paperclip"></mat-icon>
+            <mat-hint align="end">Tamaño máximo de archivo: 3 MB</mat-hint>
+            <mat-error *ngIf="form.get('sFile').invalid">{{configService.getErrorMessage(form,'sFile')}}</mat-error>
+            <mat-error *ngIf="form.get('sFile').hasError('requiredFileType')">
+              Archivo no permitido.
+            </mat-error>
+            <mat-error *ngIf="form.get('sFile').hasError('maxContentSize')">
+              Tamaño máximo de archivo: 3 MB (su archivo tiene {{form.get('sFile')?.getError('maxContentSize').actualSize| byteFormat}}).
+            </mat-error>
+            <mat-error *ngIf="form.get('sFile').hasError('requiredFileMinSize')">
+              Su archivo está vacío.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row pb-3">
+        <div class="col-12">
+          <button type="button" tabindex="-1" mat-raised-button class="mt-1 mat-elevation-z8" color="primary" (click)="btnUsuarios()">
+            <mat-icon fontSet="fas" fontIcon="fa-search"></mat-icon> Agregar usuario parcipante
+          </button>
+        </div>
+      </div>
+
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z2 mt-3">
+        <ng-container matColumnDef="item">
+          <mat-header-cell *matHeaderCellDef> N° </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;"> {{i + 1}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="dni">
+          <mat-header-cell *matHeaderCellDef> DNI </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.dni}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nombres">
+          <mat-header-cell *matHeaderCellDef> Nombres </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nombres}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="apellidos">
+          <mat-header-cell *matHeaderCellDef> Apellidos </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.apellidos}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="correo">
+          <mat-header-cell *matHeaderCellDef> Correo </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button tabindex="-1" mat-icon-button color="warn" matTooltip="Eliminar" (click)="delete(element)">
+              <mat-icon fontSet="fas" fontIcon="fa-trash"></mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns; let odd = odd;" [ngClass]="{gray: odd}"></mat-row>
+      </mat-table>
+
+    </mat-card-content>
+  </mat-card>
+
+  <div class="row mt-3">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+      <button tabindex="-1" mat-raised-button class="mt-1" color="primary" (click)="registrar()">
+        <mat-icon fontSet="fas" fontIcon="fa-save"></mat-icon> Registrar
+      </button>
+    </div>
+  </div>
+
+</form>
